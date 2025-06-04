@@ -1,0 +1,21 @@
+package com.example.librarymanagementsystem.entity; 
+import jakarta.persistence.*; 
+import lombok.Data; 
+import lombok.NoArgsConstructor; 
+import lombok.AllArgsConstructor; 
+@Entity 
+@Table(name = "books") 
+@Data // From Lombok, generates getters, setters, toString, equals, hashCode 
+@NoArgsConstructor // From Lombok, generates no-arg constructor 
+@AllArgsConstructor // From Lombok, generates constructor with all fields 
+public class Book { 
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    private Long bookId; 
+    @Column(nullable = false) 
+    private String title; 
+    @Column(nullable = false) 
+    private String author; 
+    private String category; 
+    private boolean available = true; // Default to available 
+} 
