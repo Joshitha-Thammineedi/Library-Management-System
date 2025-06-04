@@ -1,0 +1,40 @@
+package com.example.librarymanagementsystem.config; 
+import org.springframework.context.annotation.Bean; 
+import org.springframework.context.annotation.Configuration; 
+import org.springframework.security.config.annotation.web.builders.HttpSecurity; 
+import 
+org.springframework.security.config.annotation.web.configuration.EnableWebSecurity; 
+import org.springframework.security.core.userdetails.User; 
+import org.springframework.security.core.userdetails.UserDetails; 
+import org.springframework.security.core.userdetails.UserDetailsService; 
+import org.springframework.security.provisioning.InMemoryUserDetailsManager; 
+import org.springframework.security.web.SecurityFilterChain; 
+import static org.springframework.security.config.Customizer.withDefaults; 
+@Configuration 
+@EnableWebSecurity 
+public class SecurityConfig { 
+    @Bean 
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
+        http 
+            .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity in API (be careful in 
+production)  .authorizeHttpRequests(authorize -> authorize 
+                .requestMatchers("/h2-console/").permitAll() // Allow H2 console access  
+.requestMatchers("/api/books/").hasRole("LIBRARIAN") // Only librarians can access book 
+AP    .anyRequest().authenticated() // All other requests need authentication) 
+            .httpBasic(withDefaults()); // Use HTTP Basic authentication 
+        // Allow H2 console to be displayed in a frame (Spring Security usually blocks this) 
+        http.headers(headers -> headers.frameOptions(frameOptions -> 
+frameOptions.sameOrigin())); 
+        return http.build(); 
+    } 
+    @Bean 
+    public UserDetailsService userDetailsService() { 
+        // In-memory user for demonstration. In real app, integrate with database. 
+        UserDetails librarian = User.withDefaultPasswordEncoder() 
+            .username("librarian") 
+            .password("password") 
+            .roles("LIBRARIAN") 
+            .build(); 
+        return new InMemoryUserDetailsManager(librarian); 
+    } 
+} 
