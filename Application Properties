@@ -1,0 +1,12 @@
+# H2 Database Console 
+spring.h2.console.enabled=true 
+spring.h2.console.path=/h2-console 
+spring.datasource.url=jdbc:h2:mem:librarydb 
+spring.datasource.driverClassName=org.h2.Driver 
+spring.datasource.username=sa 
+spring.datasource.password= 
+# JPA/Hibernate Properties 
+spring.jpa.hibernate.ddl-auto=update # Creates/updates schema based on entities 
+spring.jpa.show-sql=true # Show SQL queries in console 
+spring.jpa.properties.hibernate.format_sql=true # Format SQL queries nicely 
+spring.jpa.defer-datasource-initialization=true 
